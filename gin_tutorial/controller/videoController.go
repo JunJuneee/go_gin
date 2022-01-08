@@ -3,7 +3,7 @@ package controller
 import (
 	"gin/entity"
 	"gin/service"
-	"gin/validators"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -12,6 +12,7 @@ import (
 type VideoController interface {
 	FindAll() []entity.Video
 	Save(c *gin.Context) error
+	ShowAll(c *gin.Context)
 }
 
 type controller struct {
@@ -22,7 +23,7 @@ var validate *validator.Validate
 
 func New(s service.VideoService) VideoController {
 	validate = validator.New()
-	validate.RegisterValidation("is-cool", validators.ValidateCoolTitle)
+	// validate.RegisterValidation("is-cool", validators.ValidateCoolTitle)
 	return &controller{
 		service: s,
 	}
@@ -42,4 +43,13 @@ func (ct *controller) Save(c *gin.Context) error {
 	}
 	ct.service.Save(video)
 	return nil
+}
+
+func (ct *controller) ShowAll(c *gin.Context) {
+	videos := ct.service.FindAll()
+	data := gin.H{
+		"title":  "Video Page",
+		"videos": videos,
+	}
+	c.HTML(http.StatusOK, "index.html", data)
 }
