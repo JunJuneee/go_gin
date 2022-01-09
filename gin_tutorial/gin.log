@@ -5,18 +5,23 @@
 [GIN-debug] GET    /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (1 handlers)
 [GIN-debug] HEAD   /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (1 handlers)
 [GIN-debug] Loaded HTML Templates (4): 
+	- 
 	- footer.html
 	- header.html
 	- index.html
-	- 
 
 [GIN-debug] POST   /login                    --> main.main.func1 (3 handlers)
 [GIN-debug] GET    /api/videos               --> main.main.func2 (4 handlers)
 [GIN-debug] POST   /api/videos               --> main.main.func3 (4 handlers)
+[GIN-debug] PUT    /api/videos/:id           --> main.main.func4 (4 handlers)
+[GIN-debug] DELETE /api/videos/:id           --> main.main.func5 (4 handlers)
 [GIN-debug] GET    /view/videos              --> gin/controller.VideoController.ShowAll-fm (3 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
-::1 - [08 Jan 22 23:54 KST] POST /login 200 3.430061ms 
-::1 - [08 Jan 22 23:57 KST] POST /api/videos 200 1.069108ms 
-::1 - [08 Jan 22 23:57 KST] GET /api/videos 200 331.76µs 
+::1 - [09 Jan 22 16:20 KST] POST /login 200 690.745µs 
+::1 - [09 Jan 22 16:21 KST] POST /api/videos 200 5.177773ms 
+::1 - [09 Jan 22 16:21 KST] GET /api/videos 200 708.85µs 
+::1 - [09 Jan 22 16:23 KST] PUT /api/videos/1 200 1.86657ms 
+::1 - [09 Jan 22 16:23 KST] PUT /api/videos/1 200 2.973591ms 
+::1 - [09 Jan 22 16:24 KST] DELETE /api/videos/1 200 2.964599ms 

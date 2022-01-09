@@ -3,6 +3,7 @@ package main
 import (
 	"gin/controller"
 	"gin/midwares"
+	"gin/repository"
 	"gin/service"
 	"io"
 	"net/http"
@@ -13,9 +14,10 @@ import (
 )
 
 var (
-	videoService service.VideoService = service.New()
-	loginService service.LoginService = service.NewLoginService()
-	jwtService   service.JWTService   = service.NewJWTService()
+	videoRepository repository.VideoRepository = repository.NewVideoRepository()
+	videoService    service.VideoService       = service.New(videoRepository)
+	loginService    service.LoginService       = service.NewLoginService()
+	jwtService      service.JWTService         = service.NewJWTService()
 
 	videoController controller.VideoController = controller.New(videoService)
 	loginContoller  controller.LoginController = controller.NewLoginContoller(loginService, jwtService)
@@ -27,6 +29,7 @@ func setupLogOutput() {
 }
 
 func main() {
+	defer videoRepository.CloseDB()
 	setupLogOutput()
 	server := gin.New()
 	server.Static("/css", "./templates/css")
@@ -59,8 +62,28 @@ func main() {
 			} else {
 				c.JSON(http.StatusOK, gin.H{"message": "video Input is Valid!"})
 			}
-
 		})
+
+		apiRoutes.PUT("/videos/:id", func(c *gin.Context) {
+			err := videoController.Update(c)
+
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			} else {
+				c.JSON(http.StatusOK, gin.H{"message": "video Input is Valid!"})
+			}
+		})
+
+		apiRoutes.DELETE("/videos/:id", func(c *gin.Context) {
+			err := videoController.Delete(c)
+
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			} else {
+				c.JSON(http.StatusOK, gin.H{"message": "video Input is Valid!"})
+			}
+		})
+
 	}
 
 	viewRoutes := server.Group("/view")
